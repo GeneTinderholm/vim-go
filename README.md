@@ -1,3 +1,13 @@
+# Changes from fatih/vim-go
+
+This is a fork of [vim-go](https://github.com/fatih/vim-go). The following changes have been made:
+
+- Added `g:go_debug_restore_layout` (default 0) - setting this to 1 will restore whatever layout you had when you started debugging (via `mksession`)
+
+### Rationale:
+
+This is what I thought `g:go_debug_preserve_layout` did originally. I tend to futz around with the windows a lot when I'm debugging, and once I've figured it out, I really just want my buffers back how they were.
+
 # vim-go [![GitHub Actions Status](https://github.com/fatih/vim-go/workflows/test/badge.svg)](https://github.com/fatih/vim-go/actions)
 
 
