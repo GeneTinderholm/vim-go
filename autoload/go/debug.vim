@@ -353,8 +353,8 @@ function! go#debug#Stop() abort
 
   let l:debugrestorelayout = go#config#DebugRestoreLayout()
   if l:debugrestorelayout
-    execute "source VimGoDebug.vim"
-    delete(fnameescape("VimGoDebug.vim"))
+    execute "source " . g:godebugsessfile
+    call delete(fnameescape(g:godebugsessfile))
   endif
 endfunction
 
@@ -482,11 +482,6 @@ function! s:create_layout() abort
   let l:winid = win_getid()
   let l:debugwindows = go#config#DebugWindows()
   let l:debugpreservelayout = go#config#DebugPreserveLayout()
-  let l:debugrestorelayout = go#config#DebugRestoreLayout()
-
-  if l:debugrestorelayout
-    execute "mksession VimGoDebug.vim"
-  endif
 
   if !(empty(l:debugwindows) || l:debugpreservelayout)
     silent! only!
@@ -832,6 +827,12 @@ endfunction
 " Start the debug mode. The first variadic argument is the package name to
 " compile and debug, anything else will be passed to the running program.
 function! go#debug#Start(mode, ...) abort
+  let l:debugrestorelayout = go#config#DebugRestoreLayout()
+  if l:debugrestorelayout
+    let g:godebugsessfile = tempname() . '.vim'
+    execute "mksession! " . g:godebugsessfile
+  endif
+
   call go#cmd#autowrite()
 
   if !go#util#has_job()
