@@ -350,6 +350,12 @@ function! go#debug#Stop() abort
     autocmd!
   augroup END
   augroup! vim-go-debug
+
+  let l:debugrestorelayout = go#config#DebugRestoreLayout()
+  if l:debugrestorelayout
+    execute "source VimGoDebug.vim"
+    delete(fnameescape("VimGoDebug.vim"))
+  endif
 endfunction
 
 function! s:goto_file() abort
@@ -476,6 +482,11 @@ function! s:create_layout() abort
   let l:winid = win_getid()
   let l:debugwindows = go#config#DebugWindows()
   let l:debugpreservelayout = go#config#DebugPreserveLayout()
+  let l:debugrestorelayout = go#config#DebugRestoreLayout()
+
+  if l:debugrestorelayout
+    execute "mksession VimGoDebug.vim"
+  endif
 
   if !(empty(l:debugwindows) || l:debugpreservelayout)
     silent! only!
